@@ -1,0 +1,6 @@
+speechrecognition
+pydub
+transformers
+datasets
+torch
+logging
