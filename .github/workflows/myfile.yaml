@@ -1,6 +1,4 @@
-Here's a GitHub Actions workflow YAML file:
 
-```yaml
 name: Python Application CI
 
 on:
