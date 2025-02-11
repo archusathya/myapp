@@ -1,4 +1,4 @@
-```yaml
+
 name: Python Application Workflow
 
 on:
@@ -65,5 +65,3 @@ jobs:
     - name: Deploy Application
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: echo "Deploying application..."
-```
-This is a sample YAML file for the mentioned tech stack. Please replace 'echo "Deploying application...
