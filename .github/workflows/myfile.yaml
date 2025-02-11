@@ -1,4 +1,4 @@
-```yaml
+
 name: Python ReactJS CI
 
 on:
@@ -63,7 +63,3 @@ jobs:
     - name: Deploy
       run: ./deploy.sh
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-```
-Note: 
-- This is just a simple example. In real-world scenarios, your build scripts and test scripts will depend on your actual project configuration.
--
