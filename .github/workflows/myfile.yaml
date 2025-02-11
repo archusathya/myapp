@@ -1,6 +1,4 @@
-Here's a detailed YAML file that meets the provided specifications:
 
-```yaml
 name: Build, Test and Deploy Python with ReactJS
 
 on:
