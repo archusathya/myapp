@@ -70,7 +70,4 @@ jobs:
       run: echo 'Deploying application...'
 
 
-Here's brief explanation for each part:
 
-1. Starts and names the workflow.
-2. Defines the event
