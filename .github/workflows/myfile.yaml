@@ -1,4 +1,4 @@
-```yaml
+
 name: Python ReactJS CI
 on:
   push:
