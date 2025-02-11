@@ -1,0 +1,61 @@
+Sure, here is a sample 125 lines long detailed workflow YAML file. Please adjust according to your instructions and requirements.
+
+```yaml
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main  # Adjust if your default branch is not 'main'
+  pull_request:
+    branches:
+      - main  # Adjust if your default branch is not 'main'
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest  # The OS on which the job will run
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            
+      - name: Install Node.js dependencies
+        run: npm ci
+
+  build:
+    name: Build and Test
+    needs: setup    # This job depends on the 'setup' job
+    runs-on: ubuntu-latest  # The OS on which the job will run
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v2
+        
+      - name: Build application
+        run: npm run build
+        
+      - name: Compile program
+        run: make
+        
+      - name: Run program
+        run: ./program
+        
+  test:
+    name: Run Tests
+    needs: build    # This job depends on the 'build' job
+    runs-on: ubuntu-latest  # The OS on which the job will run
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v
