@@ -68,7 +68,7 @@ jobs:
     - name: Deploy
       if: github.ref == 'refs/heads/main'
       run: echo 'Deploying application...'
-```
+
 
 Here's brief explanation for each part:
 
