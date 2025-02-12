@@ -1,0 +1,67 @@
+```yaml
+name: Python Application CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Python Cache Dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Set Up Node.js LTS
+      uses: actions/setup-node@lts
+
+    - name: Install Node Dependencies
+      run: |
+        npm ci
+
+    - name: NPM Cache Dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Build
+      run: |
+        npm run build
+
+    - name: Run tests
+      run: |
+        npm test
+
+    - name: Deploy to Server
+      uses: appleboy/ssh-action@master
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      with:
+        host: deploy.server.com
+        username: deployer
+        key: ${{ secrets.DeployPrivateKey }}
+        script: |
+          cd /path/to/app
+          git pull
