@@ -1,0 +1,72 @@
+```yaml
+name: Python/ReactJS CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+
+      - name: Install Node dependencies
+        run: |
+          cd react-interface
+          npm install
+
+      - name: Cache Node dependencies
+        uses: actions/cache@v3
+        with:
+          path: react-interface/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/react-interface/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Build the project
+        run: |
+          cd react-interface
+          npm run build
+
+      - name: Test Python
+        run: |
+          . venv/bin/activate
+          pytest
+
+      - name: Test React
+        run: |
+          cd react-interface
+          npm test
+
+      - name: Deploy Application
+        if: github.event_name == 'push
