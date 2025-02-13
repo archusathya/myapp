@@ -1,6 +1,5 @@
-Here is your GitHub Actions workflow YAML file:
 
-```yaml
+
 name: CI/CD Workflow
 
 on:
@@ -59,8 +58,3 @@ jobs:
     - name: Deploy
       run: echo "Deployment step could be added here"
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-``` 
-
-This YAML file is constructed according to the instructions provided. Please replace `echo "Deployment step could be added here"` with the actual deployment command(s).
-
-This workflow gets triggered on pushes and pull requests to the '
